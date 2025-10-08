@@ -41,6 +41,12 @@ GPIO.add_event_detect(active_pin,
                       GPIO.RISING, 
                       callback=reverse(),
                       bouncetime=200)
+for pwm in pwms:
+    pwm.stop(0)
+
+GPIO.remove_event_detect(p)
+# Clean up on exit
+GPIO.cleanup()
 
 
 
