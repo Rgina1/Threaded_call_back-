@@ -11,21 +11,16 @@ Direction = True # True is forward, backwards is left
 
 def Brightness_with_phase(pwm_objects, f, num_leds):
 
-    if not Direction:
-        phase = -math.pi/11
-    else:
-        phase = math.pi/11
-
     for pwm in pwm_objects:
         pwm.start(0)
         
     while True:
         for i in range(num_leds):
-            pwm_objects[i].ChangeDutyCycle(100*math.sin(2*math.pi*f*time.time()-(i*phase))**2)
+            pwm_objects[i].ChangeDutyCycle(100*math.sin(2*math.pi*f*time.time()-(Direction*i*phase))**2)
 
 def reverse(pin):
     global Direction
-    Direction = not Direction
+    Direction = -1*Direction
     
 for pin in pins:
     GPIO.setup(pin,GPIO.OUT, initial=0)
@@ -51,6 +46,7 @@ for pwm in pwms:
 GPIO.remove_event_detect(active_pin)
 # Clean up on exit
 GPIO.cleanup()
+
 
 
 
