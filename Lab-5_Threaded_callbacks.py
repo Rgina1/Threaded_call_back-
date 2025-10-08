@@ -39,7 +39,7 @@ GPIO.setup(active_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.add_event_detect(active_pin, 
                       GPIO.RISING, 
                       callback=reverse,
-                      bouncetime=200)
+                      bouncetime=150)
 try:
     Brightness_with_phase(pwms, frequency, len(pins))
 except KeyboardInterrupt:
@@ -51,5 +51,6 @@ for pwm in pwms:
 GPIO.remove_event_detect(active_pin)
 # Clean up on exit
 GPIO.cleanup()
+
 
 
