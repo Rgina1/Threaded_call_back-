@@ -26,10 +26,7 @@ def Brightness_with_phase(pwm_objects, f, num_leds):
 def reverse(pin):
     global Direction
     Direction = not Direction
-    return Direction
-
-
-
+    
 for pin in pins:
     GPIO.setup(pin,GPIO.OUT, initial=0)
     pwm = GPIO.PWM(pin, 500)
@@ -54,3 +51,4 @@ for pwm in pwms:
 GPIO.remove_event_detect(active_pin)
 # Clean up on exit
 GPIO.cleanup()
+
