@@ -9,9 +9,9 @@ pwms = [ ]
 frequency = 0.2 # Hz
 Direction = True # True is forward, backwards is left
 
-def Brightness_with_phase(pwm_objects, f, num_leds, direction):
+def Brightness_with_phase(pwm_objects, f, num_leds):
 
-    if not direction:
+    if not Direction:
         phase = -math.pi/11
     else:
         phase = math.pi/11
@@ -44,7 +44,7 @@ GPIO.add_event_detect(active_pin,
                       callback=reverse,
                       bouncetime=100)
 try:
-    Brightness_with_phase(pwms, frequency, len(pins), reverse(active_pin))
+    Brightness_with_phase(pwms, frequency, len(pins))
 except KeyboardInterrupt:
     print("\nExiting")
     pass
