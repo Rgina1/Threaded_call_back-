@@ -7,7 +7,7 @@ GPIO.setmode(GPIO.BCM)
 pins = [int(x) for x in input(f"input the BCM numbering of the ports you'll be using: ").split(',')]
 pwms = [ ]
 frequency = 0.2 # Hz
-direction = True # True is forward, backwards is left
+Direction = True # True is forward, backwards is left
 
 def Brightness(pwm_objects, f):
     for pwm in pwm_objects:
@@ -16,7 +16,7 @@ def Brightness(pwm_objects, f):
         #if(time.time()-past >= wait_time):
             #past = time.time()
         pwm_objects[0].ChangeDutyCycle(100*max(0,math.sin(2*math.pi*f*time.time())))
-def Brightness_with_phase(pwm_objects, f, num_leds = 10, direction=True):
+def Brightness_with_phase(pwm_objects, f, num_leds, direction):
 
     if not direction:
         phase = -math.pi/11
@@ -31,9 +31,9 @@ def Brightness_with_phase(pwm_objects, f, num_leds = 10, direction=True):
             pwm_objects[i].ChangeDutyCycle(100*math.sin(2*math.pi*f*time.time()-(i*phase))**2)
 
 def reverse(pin):
-    global direction
-    direction = not direction
-    Brightness_with_phase(pwms, frequency, len(pins), direction)
+    global Direction
+    Direction = not Direction
+    Brightness_with_phase(pwms, frequency, len(pins), Direction)
 
 
 
@@ -61,4 +61,3 @@ for pwm in pwms:
 GPIO.remove_event_detect(active_pin)
 # Clean up on exit
 GPIO.cleanup()
-
