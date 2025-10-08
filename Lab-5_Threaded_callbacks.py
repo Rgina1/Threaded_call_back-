@@ -1,4 +1,4 @@
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 import math
 GPIO.setmode(GPIO.BCM)
@@ -40,3 +40,4 @@ GPIO.add_event_detect(active_pin,
                       GPIO.RISING, 
                       callback=reverse(),
                       bouncetime=200)
+
