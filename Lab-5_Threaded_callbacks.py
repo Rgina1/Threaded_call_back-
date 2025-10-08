@@ -30,7 +30,7 @@ def Brightness_with_phase(pwm_objects, f, num_leds = 10, direction=True):
         for i in range(num_leds):
             pwm_objects[i].ChangeDutyCycle(100*math.sin(2*math.pi*f*time.time()-(i*phase))**2)
 
-def reverse():
+def reverse(pin):
     global direction
     direction = not direction
     Brightness_with_phase(pwms, frequency, len(pins), direction)
@@ -61,3 +61,4 @@ for pwm in pwms:
 GPIO.remove_event_detect(active_pin)
 # Clean up on exit
 GPIO.cleanup()
+
