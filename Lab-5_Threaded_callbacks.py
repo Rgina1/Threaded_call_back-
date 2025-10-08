@@ -3,7 +3,7 @@ import time
 import math
 GPIO.setmode(GPIO.BCM)
 
-pins = [int(x) for x in input(f"input the BCM numbering of the ports you'll be using")]
+pins = [int(x) for x in input(f"input the BCM numbering of the ports you'll be using: ").split(',')]
 pwms = [ ]
 frequency = 0.2 # Hz
 direction = True # True is forward, backwards is left
@@ -40,4 +40,5 @@ GPIO.add_event_detect(active_pin,
                       GPIO.RISING, 
                       callback=reverse(),
                       bouncetime=200)
+
 
