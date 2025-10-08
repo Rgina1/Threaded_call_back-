@@ -10,7 +10,7 @@ frequency = 0.2 # Hz
 Direction = True # True is forward, backwards is left
 
 def Brightness_with_phase(pwm_objects, f, num_leds):
-
+    phase = math.pi/11
     for pwm in pwm_objects:
         pwm.start(0)
         
@@ -46,6 +46,7 @@ for pwm in pwms:
 GPIO.remove_event_detect(active_pin)
 # Clean up on exit
 GPIO.cleanup()
+
 
 
 
