@@ -34,11 +34,12 @@ def reverse():
     direction = not direction
     Brightness_with_phase(pwms, frequency, len(pins), direction)
 
-active_pin = int(input(f"input the BCM numbering of the pin you'll be using to activate the LEDS"))
+active_pin = int(input(f"input the BCM number of the pin you'll be using to reverse the direction of the LEDS: "))
 GPIO.setup(active_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.add_event_detect(active_pin, 
                       GPIO.RISING, 
                       callback=reverse(),
                       bouncetime=200)
+
 
 
