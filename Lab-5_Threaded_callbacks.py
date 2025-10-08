@@ -41,12 +41,18 @@ GPIO.add_event_detect(active_pin,
                       GPIO.RISING, 
                       callback=reverse(),
                       bouncetime=200)
+try:
+    Brightness_with_phase(pwms, frequency, len(pins), direction)
+except KeyboardInterrupt:
+    print("\nExiting")
+    pass
 for pwm in pwms:
     pwm.stop(0)
 
 GPIO.remove_event_detect(p)
 # Clean up on exit
 GPIO.cleanup()
+
 
 
 
