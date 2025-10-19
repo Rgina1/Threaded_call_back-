@@ -8,7 +8,7 @@ GPIO.setmode(GPIO.BCM)
 try:
     Shfiter_object = Shifter(23,25,24)
     bug_object = Bug(Shfiter_object, timestep=0.5, x=3, isWrapOn=True)
-    s1,s2,s3 = 2,3,4
+    s1,s2,s3 = 17,27,22
 
     def S1_stop(s1):
         bug_object.stop()
