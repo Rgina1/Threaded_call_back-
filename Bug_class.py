@@ -19,12 +19,12 @@ class Bug:
                 increment = -1
 
             if(self.i > 0 and self.i < len(walkValues)-1):
-                i=i+increment
+                self.i=self.i+increment
             elif (self.i==0):
                 self.i=self.i+1
             elif(self.i==len(walkValues)-1):
                 self.i=self.i-1
-            pattern = bin(walkValues[self.i])
+            pattern = walkValues[self.i]
             self.shifter.shiftByte(pattern)
 
     
@@ -38,4 +38,5 @@ try:
     bug = Bug(Shifter_object)
     bug.start()
 except KeyboardInterrupt:
+    bug.stop()
     GPIO.cleanup() 
