@@ -21,12 +21,12 @@ class Bug:
             if(self.i > 0 and self.i < len(walkValues)-1):
                 self.i=self.i+increment
             elif (self.i==0):
-                if(isWrapOn):
+                if(self.isWrapOn):
                     self.i=len(walkValues)-1
                 else:
                     self.i=self.i+1
             elif(self.i==len(walkValues)-1):
-                if(isWrapOn):
+                if(self.isWrapOn):
                     self.i= 0
                 else:
                     self.i= self.i-1

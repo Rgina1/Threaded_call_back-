@@ -18,8 +18,8 @@ try:
             bug_object.start()
         else:
             bug_object.stop()
-    def S2(s2):
-        bug_object.isWrapOn = not bug_object.isWrapOn
+    def S2(s2,bug = bug_object):
+        bug.isWrapOn = not bug.isWrapOn
     def S3(s3):
         value = GPIO.input(s3)
         if (value):
