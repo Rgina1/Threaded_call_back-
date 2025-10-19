@@ -26,12 +26,12 @@ try:
     GPIO.setup(s1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.add_event_detect(s1, 
                         GPIO.RISING, 
-                        callback= S1(),
+                        callback= S1,
                         bouncetime=200)
        
     GPIO.add_event_detect(s1, 
                         GPIO.FALLING, 
-                        callback= S1_stop(),
+                        callback= S1_stop,
                         bouncetime=200)
 
     #Threaded Callbacks s2
@@ -39,18 +39,18 @@ try:
     GPIO.setup(s2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.add_event_detect(s2, 
                         GPIO.RISING, 
-                        callback= S2(),
+                        callback= S2,
                         bouncetime=200)
     #Threaded Callbacks s3
     
     GPIO.setup(s3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.add_event_detect(s3, 
                         GPIO.RISING, 
-                        callback=S3(),
+                        callback=S3,
                         bouncetime=200)
     GPIO.add_event_detect(s3, 
                         GPIO.FALLING, 
-                        callback=S3_off(),
+                        callback=S3_off,
                         bouncetime=200)
 except KeyboardInterrupt:
     GPIO.cleanup()
