@@ -1,6 +1,6 @@
 import time
 import shifter
-import Bug
+import Bug_class as Bug
 import RPi.GPIO as GPIO
 
 
@@ -56,3 +56,4 @@ try:
                         bouncetime=200)
 except KeyboardInterrupt:
     GPIO.cleanup()
+
