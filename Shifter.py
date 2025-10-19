@@ -23,6 +23,6 @@ class Shifter:
         self.pattern = pattern
 
         for i in range(8):
-            GPIO.output(self.dataPin, self.pattern & (1<<i) )
+            GPIO.output(self.dataPin, (self.pattern >> i) & 1 )
             self.__ping(self.clockPin)
         self.__ping(self.latchPin)
