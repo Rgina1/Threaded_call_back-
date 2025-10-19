@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import random
+from Shifter import Shifter
 import time
 class Bug:
 
@@ -33,8 +34,8 @@ class Bug:
         self.shifter.shiftByte(off)
         GPIO.cleanup()
 try:
-
-    bug = Bug()
+    Shifter_object = Shifter(23,24,25)
+    bug = Bug(Shifter_object)
     bug.start()
 except KeyboardInterrupt:
     GPIO.cleanup() 
