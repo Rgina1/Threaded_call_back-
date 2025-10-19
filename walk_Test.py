@@ -1,4 +1,4 @@
-import shifter
+import Shifter
 import random
 walkValues = [x for x in range(1,(2**8)+1) if ((x & x-1)==0)] 
 Shfiter_object = Shifter(17,27,22)
@@ -17,4 +17,5 @@ while True:
     pattern = bin(walkValues[i])
 
     Shfiter_object.shiftByte(pattern)
+
 
