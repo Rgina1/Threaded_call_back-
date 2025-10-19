@@ -14,7 +14,7 @@ class Bug:
         walkValues = [x for x in range(1,(2**8)) if ((x & x-1)==0)]
         while True:
             time.sleep(self.timestep)
-            increment = random.randint(0,1) # zero is backwards -1
+            increment = 1 # zero is backwards -1
             if (increment == 0):
                 increment = -1
 
