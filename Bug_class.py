@@ -25,6 +25,7 @@ class Bug:
             elif(self.i==len(walkValues)-1):
                 self.i=self.i-1
             pattern = walkValues[self.i]
+            print(bin(pattern))
             self.shifter.shiftByte(pattern)
 
     
