@@ -14,7 +14,7 @@ while True:
         i=i+1
     elif(i==len(walkValues)-1):
         i=i-1
-    pattern = bin(walkValues[i])
+    pattern = walkValues[i]
 
     Shfiter_object.shiftByte(pattern)
 
