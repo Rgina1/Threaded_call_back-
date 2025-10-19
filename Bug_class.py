@@ -18,15 +18,15 @@ class Bug:
             increment = random.randint(0,1) # zero is backwards -1
             if (increment == 0):
                 increment = -1
-
+            self.i=self.i+increment
             if(self.i > 0 and self.i < len(walkValues)-1):
-                self.i=self.i+increment
-            elif (self.i==0):
+                pass
+            elif (self.i<=0):
                 if(self.isWrapOn):
                     self.i=len(walkValues)-1
                 else:
                     self.i=self.i+1
-            elif(self.i==len(walkValues)-1):
+            elif(self.i>=len(walkValues)-1):
                 if(self.isWrapOn):
                     self.i= 0
                 else:
