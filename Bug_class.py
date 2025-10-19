@@ -21,23 +21,17 @@ class Bug:
             if(self.i > 0 and self.i < len(walkValues)-1):
                 self.i=self.i+increment
             elif (self.i==0):
-                self.i=self.i+1
+                if(isWrapOn):
+                    self.i=len(walkValues)-1
+                else:
+                    self.i=self.i+1
             elif(self.i==len(walkValues)-1):
-                self.i=self.i-1
+                if(isWrapOn):
+                    self.i= 0
+                else:
+                    self.i= self.i-1
+
             pattern = walkValues[self.i]
             print(bin(pattern))
             self.shifter.shiftByte(pattern)
 
-    
-    def stop(self):
-        self.checkForStop = False
-        off = 0b00000000
-        self.shifter.shiftByte(off)
-        GPIO.cleanup()
-try:
-    Shifter_object = Shifter(23,25,24)
-    bug = Bug(Shifter_object)
-    bug.start()
-except KeyboardInterrupt:
-    bug.stop()
-    GPIO.cleanup() 

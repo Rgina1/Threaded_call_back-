@@ -3,10 +3,11 @@ from Shifter import Shifter
 from Bug_class import Bug
 import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)
 
 try:
     bug_object = Bug(Shfiter_object, timestep=0.5, x=3, isWrapOn=True)
-    s1,s2,s3 = 1,2,3
+    s1,s2,s3 = 2,3,4
 
     def S1_stop(s1):
         bug_object.stop()
@@ -31,11 +32,7 @@ try:
                         GPIO.FALLING, 
                         callback= S1_stop(),
                         bouncetime=200)
-    GPIO.setup(s1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(s1, 
-                        GPIO.RISING, 
-                        callback= S1(),
-                        bouncetime=200)
+
     #Threaded Callbacks s2
     
     GPIO.setup(s2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -52,7 +49,7 @@ try:
                         bouncetime=200)
     GPIO.add_event_detect(s3, 
                         GPIO.FALLING, 
-                        callback=S3(),
+                        callback=S3_off(),
                         bouncetime=200)
 except KeyboardInterrupt:
     GPIO.cleanup()
