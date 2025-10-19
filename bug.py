@@ -8,50 +8,51 @@ GPIO.setmode(GPIO.BCM)
 try:
     Shfiter_object = Shifter(23,25,24)
     bug_object = Bug(Shfiter_object, timestep=0.5, x=3, isWrapOn=True)
-    s1,s2,s3 = 17,27,22
+    Switch = [17,27,22]
 
-    def S1_stop(s1):
-        bug_object.stop()
+    
+    
     def S1(s1):
-        bug_object.start()
+        value = GPIO.input(s1)
+        if(value):
+            bug_object.start()
+        else:
+            bug_object.stop()
     def S2(s2):
-        bug_object.attribute4 = not bug_object.attribute4
+        bug_object.isWrapOn = not bug_object.isWrapOn
     def S3(s3):
-        bug_object.attribute2 = bug_object.attribute2/3
-    def S3_off(s3):
-        bug_object.attribute2 = 3*bug_object.attribute2
+        value = GPIO.input(s3)
+        if (value):
+            bug_object.timestep = 0.5/3
+        else:
+            bug_object.timestep = 0.5
+    
 
     #Threaded Callbacks s1
+    for i in range(0,len(Switch)):
+        GPIO.setup(Switch[i], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     
-    GPIO.setup(s1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(s1, 
-                        GPIO.RISING, 
+    GPIO.add_event_detect(Switch[0], 
+                        GPIO.BOTH, 
                         callback= S1,
-                        bouncetime=200)
-       
-    GPIO.add_event_detect(s1, 
-                        GPIO.FALLING, 
-                        callback= S1_stop,
                         bouncetime=200)
 
     #Threaded Callbacks s2
     
-    GPIO.setup(s2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(s2, 
+    GPIO.add_event_detect(Switch[1], 
                         GPIO.RISING, 
                         callback= S2,
                         bouncetime=200)
     #Threaded Callbacks s3
     
-    GPIO.setup(s3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(s3, 
-                        GPIO.RISING, 
+    GPIO.add_event_detect(Switch[2], 
+                        GPIO.BOTH, 
                         callback=S3,
                         bouncetime=200)
-    GPIO.add_event_detect(s3, 
-                        GPIO.FALLING, 
-                        callback=S3_off,
-                        bouncetime=200)
+
+    while True: pass
+
 except KeyboardInterrupt:
+    bug_object.stop()
     GPIO.cleanup()
 
