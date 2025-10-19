@@ -1,7 +1,7 @@
 from Shifter import Shifter
 import random
 walkValues = [x for x in range(1,(2**8)+1) if ((x & x-1)==0)] 
-Shfiter_object = Shifter(17,27,22)
+Shfiter_object = Shifter(23,24,25)
 i = random.randint(0,len(walkValues)-1)
 while True:
     increment = random.randint(0,1) # zero is backwards -1
