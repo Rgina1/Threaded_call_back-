@@ -1,6 +1,7 @@
 from Shifter import Shifter
 import RPi.GPIO as GPIO
 import random
+import time
 walkValues = [x for x in range(1,(2**8)+1) if ((x & x-1)==0)] 
 Shfiter_object = Shifter(23,24,25)
 i = random.randint(0,len(walkValues)-1)
@@ -19,6 +20,7 @@ try:
         pattern = walkValues[i]
 
         Shfiter_object.shiftByte(pattern)
+        time.sleep(1)
 except KeyboardInterrupt:
     GPIO.cleanup()
 
