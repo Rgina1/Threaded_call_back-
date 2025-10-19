@@ -32,6 +32,11 @@ class Bug:
                     self.i= self.i-1
 
             pattern = walkValues[self.i]
-            print(bin(pattern))
+            
             self.shifter.shiftByte(pattern)
 
+    def stop(self):
+        self.checkForStop = False
+        off = 0b00000000
+        self.shifter.shiftByte(off)
+        GPIO.cleanup()
