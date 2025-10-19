@@ -1,6 +1,6 @@
 import time
-import shifter
-import Bug_class as Bug
+from Shifter import Shifter
+from Bug_class import Bug
 import RPi.GPIO as GPIO
 
 
