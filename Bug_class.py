@@ -40,4 +40,3 @@ class Bug:
         self.checkForStop = False
         off = 0b00000000
         self.shifter.shiftByte(off)
-        GPIO.cleanup()

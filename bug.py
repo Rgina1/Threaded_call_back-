@@ -2,7 +2,7 @@ import time
 from Shifter import Shifter
 from Bug_class import Bug
 import RPi.GPIO as GPIO
-
+import threading 
 GPIO.setmode(GPIO.BCM)
 
 try:
@@ -15,7 +15,7 @@ try:
     def S1(s1):
         value = GPIO.input(s1)
         if(value):
-            bug_object.start()
+            threading.Thread(target=bug_object.start).start()
         else:
             bug_object.stop()
     def S2(s2,bug = bug_object):
