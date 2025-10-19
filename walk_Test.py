@@ -18,9 +18,7 @@ try:
         elif(i==len(walkValues)-1):
             i=i-1
         pattern = walkValues[i]
-
         Shfiter_object.shiftByte(pattern)
-        time.sleep(1)
 except KeyboardInterrupt:
     GPIO.cleanup()
 
