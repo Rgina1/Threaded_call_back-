@@ -11,7 +11,7 @@ class Bug:
         self.shifter = __shifter
         self.checkForStop = True
     def start(self):
-        walkValues = [x for x in range(1,(2**8)+1) if ((x & x-1)==0)]
+        walkValues = [x for x in range(1,(2**8)) if ((x & x-1)==0)]
         while True:
             time.sleep(self.timestep)
             increment = random.randint(0,1) # zero is backwards -1
