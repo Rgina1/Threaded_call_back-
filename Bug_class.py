@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import random
 from Shifter import Shifter
 import time
+GPIO.setmode(GPIO.BCM)
 class Bug:
 
     def __init__(self, __shifter, timestep=0.1, x = 3, isWrapOn=False):
