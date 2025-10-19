@@ -17,3 +17,4 @@ while True:
     pattern = bin(walkValues[i])
 
     Shfiter_object.shiftByte(pattern)
+
