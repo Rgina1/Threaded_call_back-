@@ -12,7 +12,7 @@ class Bug:
         self.checkForStop = True
     def start(self):
         walkValues = [x for x in range(1,(2**8)) if ((x & x-1)==0)]
-        while True:
+        while self.checkForStop:
             time.sleep(self.timestep)
             increment = 1 # zero is backwards -1
             if (increment == 0):
@@ -35,7 +35,7 @@ class Bug:
         self.shifter.shiftByte(off)
         GPIO.cleanup()
 try:
-    Shifter_object = Shifter(23,24,25)
+    Shifter_object = Shifter(23,25,24)
     bug = Bug(Shifter_object)
     bug.start()
 except KeyboardInterrupt:
