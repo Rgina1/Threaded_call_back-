@@ -12,6 +12,7 @@ class Bug:
         self.shifter = __shifter
         self.checkForStop = True
     def start(self):
+        self.checkForStop = True 
         walkValues = [x for x in range(1,(2**8)) if ((x & x-1)==0)]
         while self.checkForStop:
             time.sleep(self.timestep)
@@ -42,4 +43,5 @@ class Bug:
         self.checkForStop = False
 
         
+
 
