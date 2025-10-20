@@ -35,8 +35,11 @@ class Bug:
             pattern = walkValues[self.i]
             
             self.shifter.shiftByte(pattern)
-
-    def stop(self):
-        self.checkForStop = False
+         #turn Off code   
         off = 0b00000000
         self.shifter.shiftByte(off)
+    def stop(self):
+        self.checkForStop = False
+
+        
+
