@@ -7,7 +7,7 @@ GPIO.setmode(GPIO.BCM)
 
 try:
     Shfiter_object = Shifter(23,25,24)
-    bug_object = Bug(Shfiter_object, timestep=0.5, x=3, isWrapOn=False)
+    bug_object = Bug(Shfiter_object, timestep=0.1, x=3, isWrapOn=False)
     Switch = [17,27,22]
 
     
@@ -23,9 +23,9 @@ try:
     def S3(s3):
         value = GPIO.input(s3)
         if (value):
-            bug_object.timestep = 0.5/3
+            bug_object.timestep = 0.1/3
         else:
-            bug_object.timestep = 0.5
+            bug_object.timestep = 0.1
     
 
     #Threaded Callbacks s1
@@ -55,4 +55,5 @@ try:
 except KeyboardInterrupt:
     bug_object.stop()
     GPIO.cleanup()
+
 
