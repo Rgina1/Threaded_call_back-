@@ -52,9 +52,9 @@ try:
     # Since add_event_detect only listens for state changes this is 
     # this logic will capture the inital state of the button which the add_event_detect won't
     # Only important for S1 and S3
-    if (GPIO.input(Switch[0]):
+    if (GPIO.input(Switch[0])):
         S1(Switch[0])
-    if (GPIO.input(Switch[2]):
+    if (GPIO.input(Switch[2])):
         S1(Switch[2])    
 
     while True: pass
@@ -62,6 +62,7 @@ try:
 except KeyboardInterrupt:
     bug_object.stop()
     GPIO.cleanup()
+
 
 
 
