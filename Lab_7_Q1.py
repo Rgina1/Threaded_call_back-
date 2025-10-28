@@ -94,7 +94,8 @@ def parsePOSTdata(data):
 def serve_web_page(off = False):
 
     led_brightness_history ={'led1': 0 ,'led2': 0 , 'led3':0  }
-
+    led = 0
+    brightness = 0
     while not off.is_set():
         print('Waiting for connection...')
         conn, (client_ip, client_port) = s.accept()     # blocking call
@@ -147,3 +148,4 @@ finally:
     s.close()
 
     GPIO.cleanup()
+
