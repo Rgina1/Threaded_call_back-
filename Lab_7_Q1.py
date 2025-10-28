@@ -152,3 +152,4 @@ finally:
     webpageTread.join()
     s.close()
     GPIO.cleanup()
+    print('Succeful Shutdown')
