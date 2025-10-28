@@ -26,7 +26,7 @@ pwm_2.start(0)
 pwm_3.start(0)
 
 
-def web_page(led1_brightness=0, led2_brightness=0, led3_brightness=0):
+def web_page(led1_brightness='0', led2_brightness='0', led3_brightness='0'):
     # Define html code, with user text passed from the browser via POST request.
     # Note we cannot use an f-string here since there are HTML style definitions
     # that use the {} syntax!
@@ -69,12 +69,12 @@ def web_page(led1_brightness=0, led2_brightness=0, led3_brightness=0):
         </form>
 
         <h2>Current LED Brightness Levels</h2>
-        <p>LED 1: <span class="led-state">{led1}%</span></p>
-        <p>LED 2: <span class="led-state">{led2}%</span></p>
-        <p>LED 3: <span class="led-state">{led3}%</span></p>
+        <p>LED 1: <span class="led-state">"""+ led1_brightness + """%</span></p>
+        <p>LED 2: <span class="led-state">"""+ led2_brightness + """%</span></p>
+        <p>LED 3: <span class="led-state">"""+ led3_brightness + """%</span></p>
     </body>
     </html>
-    """.format(led1=led1_brightness, led2=led2_brightness, led3=led3_brightness)
+    """
 
     return bytes(html, 'utf-8')
 
@@ -93,9 +93,9 @@ def parsePOSTdata(data):
 
 def serve_web_page(off = False):
 
-    led_brightness_history ={'led1': 0 ,'led2': 0 , 'led3':0  }
-    led = 0
-    brightness = 0
+    led_brightness_history ={'led1': '0' ,'led2': '0' , 'led3': '0' }
+    led = '0'
+    brightness = '0'
     while not off.is_set():
         print('Waiting for connection...')
         conn, (client_ip, client_port) = s.accept()     # blocking call
@@ -146,6 +146,4 @@ finally:
     off.set()
     webpageTread.join()
     s.close()
-
     GPIO.cleanup()
-
