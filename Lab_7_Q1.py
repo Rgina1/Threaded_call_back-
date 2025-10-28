@@ -131,7 +131,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # pass IP addr & socket ty
 s.bind(('', 80))     # bind to given port
 s.listen(3)          # up to 3 queued connections
 off = threading.Event()
-webpageTread = threading.Thread(target=serve_web_page, args=(off))
+webpageTread = threading.Thread(target=serve_web_page, args=(off,))
 webpageTread.daemon = True
 webpageTread.start()
 
@@ -145,4 +145,5 @@ finally:
     off.set()
     webpageTread.join()
     s.close()
+
     GPIO.cleanup()
