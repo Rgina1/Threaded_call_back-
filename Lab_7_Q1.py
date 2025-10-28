@@ -97,8 +97,11 @@ def serve_web_page(off = False):
     led = '0'
     brightness = '0'
     while not off.is_set():
-        print('Waiting for connection...')
-        conn, (client_ip, client_port) = s.accept()     # blocking call
+        try:
+            print('Waiting for connection...')
+            conn, (client_ip, client_port) = s.accept()     # blocking call
+        except socket.timeout:
+            pass
         print(f'Connection from {client_ip} on client port {client_port}')
         client_message = conn.recv(2048).decode('utf-8')
         print(f'Message from client:\n{client_message}')
@@ -130,7 +133,8 @@ def serve_web_page(off = False):
            
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # pass IP addr & socket type
 s.bind(('', 80))     # bind to given port
-s.listen(3)          # up to 3 queued connections
+s.listen(3)    
+s.settimeout(1.0)      
 off = threading.Event()
 webpageTread = threading.Thread(target=serve_web_page, args=(off,))
 webpageTread.daemon = True
