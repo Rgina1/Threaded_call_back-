@@ -100,34 +100,35 @@ def serve_web_page(off = False):
         try:
             print('Waiting for connection...')
             conn, (client_ip, client_port) = s.accept()     # blocking call
+            print(f'Connection from {client_ip} on client port {client_port}')
+            client_message = conn.recv(2048).decode('utf-8')
+            print(f'Message from client:\n{client_message}')
+            data_dict = parsePOSTdata(client_message)
+            if 'led' in data_dict.keys() and 'brightness' in data_dict.keys():   # make sure data was posted
+                led = data_dict["led"]
+                brightness = data_dict["brightness"]
+                    
+            conn.send(b'HTTP/1.1 200 OK\r\n')                  # status line
+            conn.send(b'Content-Type: text/html\r\n')          # headers
+            conn.send(b'Connection: close\r\n\r\n')
+
+            if int (led) == 1:
+                pwm_1.ChangeDutyCycle(int(brightness))
+                led_brightness_history['led1'] = brightness
+            elif int (led) == 2:
+                pwm_2.ChangeDutyCycle(int(brightness))
+                led_brightness_history['led2'] = brightness
+            elif int (led) == 3:
+                pwm_3.ChangeDutyCycle(int(brightness))
+                led_brightness_history['led3'] = brightness
+            try:
+                conn.sendall(web_page(led_brightness_history['led1'],led_brightness_history['led2'],led_brightness_history['led3']))                       # body
+            finally:
+                conn.close()
         except socket.timeout:
             pass
-        print(f'Connection from {client_ip} on client port {client_port}')
-        client_message = conn.recv(2048).decode('utf-8')
-        print(f'Message from client:\n{client_message}')
-        data_dict = parsePOSTdata(client_message)
-        if 'led' in data_dict.keys() and 'brightness' in data_dict.keys():   # make sure data was posted
-            led = data_dict["led"]
-            brightness = data_dict["brightness"]
-                 
-        conn.send(b'HTTP/1.1 200 OK\r\n')                  # status line
-        conn.send(b'Content-Type: text/html\r\n')          # headers
-        conn.send(b'Connection: close\r\n\r\n')
 
-        if int (led) == 1:
-            pwm_1.ChangeDutyCycle(int(brightness))
-            led_brightness_history['led1'] = brightness
-        elif int (led) == 2:
-            pwm_2.ChangeDutyCycle(int(brightness))
-            led_brightness_history['led2'] = brightness
-        elif int (led) == 3:
-            pwm_3.ChangeDutyCycle(int(brightness))
-            led_brightness_history['led3'] = brightness
 
-        try:
-            conn.sendall(web_page(led_brightness_history['led1'],led_brightness_history['led2'],led_brightness_history['led3']))                       # body
-        finally:
-            conn.close()
 
 
            
