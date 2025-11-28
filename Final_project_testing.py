@@ -1259,7 +1259,7 @@ def auto_op(turret_state,targets, pan_stepper, tilt_stepper, stop_flag):
     turret_state['auto_active'] = False
     turret_state['status'] = "Autonomous operation complete"
 
-def handle_client(conn,pan,tilt,autonomous_thread):
+def handle_client(conn):
     
     request = conn.recv(4096).decode('utf-8', errors='ignore')
     if not request:
@@ -1416,4 +1416,5 @@ if __name__ == "__main__":
     # Instantiate motors with parallel_drive enabled
     pan = Stepper(s, lock1, parallel_drive=False)
     tilt = Stepper(s, lock2, parallel_drive=False)
+
     run_server(host='', port=80)
