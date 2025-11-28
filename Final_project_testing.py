@@ -173,6 +173,7 @@ def home_axis(motor, switch_pin, toward, away, fast_step=5, slow_step=1):# needs
     if steps >= 5000:
         raise RuntimeError("Homing failed (slow)")
 def home (pan, tilt, pan_switch, tilt_switch):
+    global turret_state
     pan_toward = 1 
     tilt_toward = 1 
     pan_away = -1
@@ -197,7 +198,8 @@ def home (pan, tilt, pan_switch, tilt_switch):
     # zeroing 
     pan.zero()
     tilt.zero()
- 
+    turret_state['pan'] = 0
+    turret_state['tilt'] = 0
 
 def web_page(laser_on='false', pan='90', tilt='90', turret_number='', status='Ready'):
     """
@@ -1419,5 +1421,6 @@ if __name__ == "__main__":
     tilt = Stepper(s, lock2, parallel_drive=False)
 
     run_server(host='', port=80)
+
 
 
