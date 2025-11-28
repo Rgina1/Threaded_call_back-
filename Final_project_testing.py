@@ -1154,6 +1154,8 @@ def update_turret_state(state, parsed_request):
     elif action == 'homing':
         # You can have your motor-control code watch for this condition
         # and run the homing routine.
+        state['pan'] = 0
+        state['tilt'] = 0
         state['status'] = 'Homing sequence initiated'
 
     # ---------- TURRET NUMBER ----------
@@ -1421,6 +1423,7 @@ if __name__ == "__main__":
     tilt = Stepper(s, lock2, parallel_drive=False)
 
     run_server(host='', port=80)
+
 
 
 
