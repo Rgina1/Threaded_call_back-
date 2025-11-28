@@ -1319,16 +1319,16 @@ def handle_client(conn):
             angle = turret_state['pan']
             # Replace this with your real motor API
             pan.goAngle(float(angle))
-
+            print ('I started panning with to an angle of',angle)
         elif action == 'tilt':
             angle = turret_state['tilt']
             tilt.goAngle(float(angle))
-
+            print ('I started tilting with to an angle of',angle)
         elif action == 'zero':
             # Use your own zeroing logic; here we just move to 0°
             pan.zero()
             tilt.zero()
-
+            print ('I started zeroed')
         elif action == 'homing':
             # Run homing routine (might block, so consider a thread if long)
             # Example: run in a separate thread so HTTP call returns quickly
@@ -1337,7 +1337,7 @@ def handle_client(conn):
                 args=(pan, tilt,tilt_switch_pin,pan_switch_pin),
                 daemon=True
             ).start()
-
+            print ('I started homing')
         elif action == 'auto_start':
             # Kick off autonomous operation using turret_state['json_url']
             url = turret_state['json_url']
@@ -1353,12 +1353,13 @@ def handle_client(conn):
                     daemon=True
                 )
                 autonomous_thread.start()
-
+                print ('I started auto')
         elif action == 'auto_stop':
             # You decide how to signal stop:
             # e.g., set a flag that run_autonomous() checks periodically
             turret_state['auto_active'] = False
             stop = True
+            print ('I have stopped')
 
         elif action == 'auto_complete':
             # Usually called from front-end animation when it's done,
@@ -1418,4 +1419,5 @@ if __name__ == "__main__":
     tilt = Stepper(s, lock2, parallel_drive=False)
 
     run_server(host='', port=80)
+
 
