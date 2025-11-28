@@ -153,7 +153,7 @@ def rad_to_deg(rad): # because inverse kinematics returns radians and steppers n
 def home_axis(motor, switch_pin, toward, away, fast_step=5, slow_step=1):# needs stepper class to be updated step function
     # Fast approach
     steps = 0
-    while GPIO.input(switch_pin) == GPIO.HIGH and steps < 20000:
+    while GPIO.input(switch_pin) == GPIO.LOW and steps < 20000:
         motor.step(toward, fast_step)
         steps += fast_step
 
@@ -166,7 +166,7 @@ def home_axis(motor, switch_pin, toward, away, fast_step=5, slow_step=1):# needs
 
     # Slow approach
     steps = 0
-    while GPIO.input(switch_pin) == GPIO.HIGH and steps < 5000:
+    while GPIO.input(switch_pin) == GPIO.LOW and steps < 5000:
         motor.step(toward,slow_step)
         steps += slow_step
 
@@ -1442,4 +1442,5 @@ if __name__ == "__main__":
     # Instantiate motors with parallel_drive enabled
     pan = Stepper(s, lock1, parallel_drive=False)
     tilt = Stepper(s, lock2, parallel_drive=False)
+
     run_server(host='', port=80)
