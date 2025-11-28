@@ -1044,7 +1044,7 @@ def create_world_state():
         'current_target_index': None
     }
 
-global turret_state, world_state, stop
+
 turret_state = create_turret_state()
 world_state = create_world_state()
 
@@ -1260,7 +1260,7 @@ def auto_op(turret_state,targets, pan_stepper, tilt_stepper, stop_flag):
     turret_state['status'] = "Autonomous operation complete"
 
 def handle_client(conn):
-    
+    global turret_state, world_state, stop, pan, tilt, autonomous_thread
     request = conn.recv(4096).decode('utf-8', errors='ignore')
     if not request:
         return
@@ -1418,3 +1418,4 @@ if __name__ == "__main__":
     tilt = Stepper(s, lock2, parallel_drive=False)
 
     run_server(host='', port=80)
+
