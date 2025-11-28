@@ -1376,7 +1376,7 @@ def handle_client(conn):
             "Connection": "close"
         }
         send_response(conn, "204", "No Content", headers, b"")
-
+        state_to_web_params(turret_state)
 
     # 4) Anything else -> 404
     else:
@@ -1423,6 +1423,7 @@ if __name__ == "__main__":
     tilt = Stepper(s, lock2, parallel_drive=False)
 
     run_server(host='', port=80)
+
 
 
 
