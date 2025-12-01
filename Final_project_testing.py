@@ -34,23 +34,37 @@ def polar_to_cartesian(output_dict:dict):
     Returns a dictionary with 'x' and 'y'.
     """
     cartesian_dict={'turrets':{}, 'globes':{}}
-    for key in output_dict:
-        for item in output_dict[key]:
-            r = output_dict[key][item]['r']
-            theta = output_dict[key][item]['theta']
+    enumerated_keys = list(output_dict.items())
+    if len(enumerated_keys) ==3:
+            r = output_dict['r']
+            theta = output_dict['theta']
             x = r * np.cos(theta)
             y = r * np.sin(theta)
-            z = output_dict[key][item]['z']
+            z = output_dict['z']
             cartesian_coords = {'x': x, 'y': y, 'z': z}
-            cartesian_dict[key][item] = cartesian_coords
-    return cartesian_dict
-def global_to_local(output_dict:dict, turret_height:float=0.0, globe_height:float=0.0,my_turret_number:int=1):
+            return cartesian_coords
+    else:
+        for key in output_dict:
+            for item in output_dict[key]:
+                r = output_dict[key][item]['r']
+                theta = output_dict[key][item]['theta']
+                x = r * np.cos(theta)
+                y = r * np.sin(theta)
+                z = output_dict[key][item]['z']
+                cartesian_coords = {'x': x, 'y': y, 'z': z}
+                cartesian_dict[key][item] = cartesian_coords
+        return cartesian_dict
+def global_to_local(output_dict:dict, turret_height:float=0.0, globe_height:float=0.0,my_turret_number='1'):
     """
     Converts global Cartesian coordinates to local coordinates for each turret.
     Returns a dictionary with local 'x', 'y', 'z' for each turret and globe.
     """
-    theta = output_dict['turrets'][str(my_turret_number)]['theta']
-    my_global_loc = polar_to_cartesian(output_dict['turrets'][str(my_turret_number)])
+    if my_turret_number =='':
+        my_turret_number = '1'
+        print('turret number not assigned')
+
+    theta = output_dict['turrets'][my_turret_number]['theta']
+    my_global_loc = polar_to_cartesian(output_dict['turrets'][my_turret_number])
     rotation_matrix = np.array([[-np.cos(theta), np.sin(theta), 0],
                                 [-np.sin(theta), -np.cos(theta), 0],
                                 [0,                 0,                1]])
@@ -61,6 +75,7 @@ def global_to_local(output_dict:dict, turret_height:float=0.0, globe_height:floa
             global_coords = polar_to_cartesian_dict[key][item]
             relative_global_vector = np.array([float(global_coords['x']), float(global_coords['y']), float (global_coords['z'])]) - np.array([float(my_global_loc['x']), float(my_global_loc['y']), float (my_global_loc['z'])])
             local_vector = np.matmul(rotation_matrix, relative_global_vector)
+            
             if key == 'turrets':
                 local_vector[2] -= turret_height
             else:
@@ -92,7 +107,7 @@ def fire(laser_pin):
     time.sleep(3)
     GPIO.output(laser_pin, GPIO.LOW)
     time.sleep(1)
-def fetch_and_parse_positions(url: str):
+def fetch_and_parse_positions(url: str, my_turret_number):
     """
     Fetches JSON data from a URL and parses it into the desired dictionary structure:
     {'turrets': {...}, 'globes': {...}} with only 'r' and 'theta'.
@@ -143,7 +158,7 @@ def fetch_and_parse_positions(url: str):
             'z': coords.get('z') 
         }
     world_cart = polar_to_cartesian(output_dict)
-    target = global_to_local(output_dict)     
+    target = global_to_local(output_dict,my_turret_number = my_turret_number)     
     return world_cart, target
 def rad_to_deg(rad): # because inverse kinematics returns radians and steppers need degrees
     """
@@ -1256,7 +1271,7 @@ def auto_op(turret_state,targets, pan_stepper, tilt_stepper, stop_flag):
         for items in angles[key]:
             if stop_flag:
                 break
-            if turret_state.get('turret_number') !=angles['turret'][items]:
+            if turret_state.get('turret_number') !=angles['turrets'][items]:
                 pan_angle = rad_to_deg(float(angles[key][items].get('theta1')))
                 tilt_angle = rad_to_deg(float(angles[key][items].get('theta2')))
                 turret_state['status'] = f"Aiming at target (pan: {pan_angle}°, tilt: {tilt_angle}°)"
@@ -1277,7 +1292,7 @@ def auto_op(turret_state,targets, pan_stepper, tilt_stepper, stop_flag):
     turret_state['status'] = "Autonomous operation complete"
 
 def handle_client(conn):
-    global turret_state, world_state, stop, pan, tilt, autonomous_thread
+    global turret_state, world_state, stop, pan, tilt, autonomous_thread,laser_pin
     request = conn.recv(4096).decode('utf-8', errors='ignore')
     if not request:
         return
@@ -1340,6 +1355,11 @@ def handle_client(conn):
         parsed = parse_request(body)              # e.g. {"action": "pan", "angle": "45"}
         turret_state = update_turret_state(turret_state, parsed)
         action = parsed.get('action')
+        if action == 'laser':
+            # Move pan motor to new angle in turret_state
+            fire(laser_pin)
+            # Replace this with your real motor API
+            print(f"Laser turned on")
         if action == 'pan':
             # Move pan motor to new angle in turret_state
             angle = turret_state['pan']
@@ -1367,8 +1387,9 @@ def handle_client(conn):
         elif action == 'auto_start':
             # Kick off autonomous operation using turret_state['json_url']
             url = turret_state['json_url']
+            my_turret_num = turret_state['turret_number']
             stop = False
-            world_cart_dict,targets = fetch_and_parse_positions(url)
+            world_cart_dict,targets = fetch_and_parse_positions(url,my_turret_number=my_turret_num)
             world_state = update_world_state_from_global_coords(world_state, world_cart_dict)
             # Optionally: parse JSON here, update world_state, etc.
             # Then start a background thread to run the sequence.
